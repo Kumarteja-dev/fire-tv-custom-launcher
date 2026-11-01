@@ -1,63 +1,337 @@
-# Fire TV Web Launcher
+# Fire TV Custom Launcher
 
-An open-source custom launcher for Amazon Fire TV, Fire TV Stick, and Fire TV Edition TVs
-(Insignia, Toshiba). The home screen is a web page, so you can change it with HTML, CSS, and
-JavaScript.
+A customized Fire TV launcher based on the open-source **Fire TV Web Launcher** project by `pickdani`.
 
-- Shows your favorite apps, the time, the weather, and a background photo.
-- Replaces the Amazon home screen when you push Home. No root needed.
-- Has no ads and no tracking.
-- Includes an optional script that disables Amazon ads, tracking, and bloatware over ADB.
+This build keeps the launcher lightweight and web-based while adding a polished theme system, custom remote navigation, animated focus effects, and a custom Sharingan-inspired theme alongside the Glass-style experience.
 
-Tested on Fire OS 8.1 (Android 11).
+## Current features
 
-## Install
+- Custom Fire TV home screen built with HTML, CSS, and JavaScript
+- Favorite apps in a single horizontal row
+- Theme switching from the footer
+- Glass theme
+- Sharingan-inspired animated theme
+- Full-screen custom artwork
+- Animated eye tracking tied to the selected app
+- Blink and wake animations
+- Focus spotlight/glow
+- Navigation sound feedback
+- 25-second Sharingan idle mode
+- Improved Fire TV remote UP/DOWN navigation
+- Clock and weather widgets
+- Austin weather configuration by default
+- FireStick Fixer integration for reliable Home-button redirection on Fire OS 8
 
-You need `adb`, Java 21, and the Android SDK.
+Tested on:
 
-1. On the TV, go to **Settings → My Fire TV → About**, and select the TV name 7 times.
-2. Go to **Settings → My Fire TV → Developer Options**, and turn on **ADB Debugging**.
-3. Find the TV's IP address in **Settings → My Fire TV → About → Network**.
-4. Run:
+- **Amazon Fire TV Stick 4K, 2nd generation**
+- **Fire OS 8.1.8.5**
 
-   ```sh
-   tools/install.sh <tv-ip>
-   ```
+## Project layout
 
-5. Accept the "Allow USB debugging?" prompt on the TV.
+The launcher UI lives here:
 
-> **Always update with `tools/install.sh`.** Android turns off the Home button service
-> when the app updates, and the script turns it on again.
-
-## Change the home screen
-
-Edit the files in [`app/src/main/assets/home/`](app/src/main/assets/home/). Start with
-[`config.js`](app/src/main/assets/home/config.js): it sets your apps, the weather city, and
-the background photos. Then copy the page to the TV. You do not need to rebuild:
-
-```sh
-tools/push.sh <tv-ip>
+```text
+app/src/main/assets/home/
 ```
 
-To see changes on the TV as you work, run `tools/dev.sh <tv-ip> start`.
+Important files:
 
-## Make the TV faster (optional)
+```text
+config.js                 Favorite apps, weather, backgrounds
+index.html                Main launcher markup
+style.css                 Base / Glass styling
+main.js                   Launcher startup logic
+remote.js                 Fire TV remote navigation
+themes.js                 Theme switching
+sharingan.js              Sharingan animations and tracking
+themes/sharingan.css      Sharingan theme styling
+images/                   Theme artwork, logos, and local assets
+```
 
-[`tools/debloat.sh`](tools/debloat.sh) disables Amazon ads, tracking, and extras, and
-speeds up animations. `tools/debloat.sh <tv-ip> restore` undoes it.
+## Requirements
 
-## Limits
+On the Windows PC used for setup:
 
-- The Amazon home screen can show for a moment before Fire TV Web Launcher covers it.
-- A Fire OS update can stop the Home button method from working.
-- A force-stop of Fire TV Web Launcher turns off the Home button service. Run `tools/install.sh` again.
+- Git
+- Java 21
+- Android SDK
+- Android Platform Tools / ADB
 
-## Compared to other launchers
+If Git Bash cannot find `adb`:
 
-[Projectivy Launcher](https://play.google.com/store/apps/details?id=com.spocky.projengmenu)
-and [LTvLauncher](https://github.com/leanbitlab-org/LtvLauncher) also replace the Fire TV home
-screen. Projectivy is not open source. LTvLauncher's Home button method did not work on
-Fire OS 8.1.8 in our tests. Fire TV Web Launcher is open source, and you design the whole screen yourself.
+```sh
+export ANDROID_HOME="/c/Users/<YOUR_USER>/AppData/Local/Android/Sdk"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
+```
+
+## Fire Stick setup
+
+### 1. Enable Developer Options
+
+1. Open **Settings → My Fire TV → About**.
+2. Highlight the Fire TV device name.
+3. Press the center/OK button 7 times.
+4. Return to **My Fire TV → Developer Options**.
+5. Turn on **ADB Debugging**.
+
+### 2. Find the Fire Stick IP
+
+Open:
+
+**Settings → My Fire TV → About → Network**
+
+### 3. Connect with ADB
+
+```sh
+adb connect <FIRE_TV_IP>:5555
+adb devices
+```
+
+Accept the debugging authorization prompt on the TV.
+
+## Launcher package
+
+```text
+dev.tvhome
+```
+
+After the APK is installed, the web assets can be updated without rebuilding the APK.
+
+## FireStick Fixer and Home-button behavior
+
+This build uses **FireStick Fixer** for Home-button redirection on Fire OS 8.
+
+Important:
+
+- Use the FireStick Fixer accessibility service.
+- Do **not** enable the Web Launcher `HomeGuardService` at the same time.
+- Running both services caused Home-button conflicts during testing.
+
+Working accessibility service:
+
+```text
+io.github.hatim.firestickfixer/.HijackService
+```
+
+## Push launcher changes to the Fire Stick
+
+### Windows / Git Bash
+
+Because Git Bash can rewrite Android paths, use:
+
+```sh
+MSYS2_ARG_CONV_EXCL="/sdcard" adb push app/src/main/assets/home/. /sdcard/tvhome/
+```
+
+Files should exist directly under:
+
+```text
+/sdcard/tvhome/
+```
+
+For example:
+
+```text
+/sdcard/tvhome/config.js
+/sdcard/tvhome/index.html
+/sdcard/tvhome/main.js
+```
+
+Do not accidentally create:
+
+```text
+/sdcard/tvhome/home/
+```
+
+### Restart the launcher
+
+```sh
+adb shell am force-stop dev.tvhome
+adb shell monkey -p dev.tvhome -c android.intent.category.LAUNCHER 1
+```
+
+## Configure favorite apps
+
+Edit:
+
+```text
+app/src/main/assets/home/config.js
+```
+
+Current favorite packages include:
+
+```js
+favorites: [
+  "com.amazon.firebat",
+  "com.netflix.ninja",
+  "com.amazon.firetv.youtube",
+  "com.hbo.hbonow",
+  "com.peacocktv.peacockfiretv",
+  "com.apple.atve.amazon.appletv",
+  "com.cricbuzz.android.tv",
+  "com.fox.foxone",
+],
+```
+
+Useful package discovery command:
+
+```sh
+adb shell pm list packages -3
+```
+
+Prime Video on the tested Fire Stick uses:
+
+```text
+com.amazon.firebat
+```
+
+## Weather
+
+Weather is provided by Open-Meteo.
+
+Current default configuration:
+
+```js
+weather: {
+  city: "Austin",
+  latitude: 30.2672,
+  longitude: -97.7431,
+  units: "fahrenheit",
+  refreshMinutes: 15,
+},
+```
+
+Change these values in `config.js` for another location.
+
+## Themes
+
+### Glass
+
+The clean everyday theme.
+
+### Sharingan-inspired theme
+
+Adds:
+
+- Full-screen custom artwork
+- Animated Mangekyo-style eye tracking
+- Blink animation
+- Wake-only eye spin
+- Spotlight that follows the focused app
+- Styled favorite-app presentation
+- Navigation sound feedback
+- Idle mode after 25 seconds
+- Remote-navigation fixes between favorites and footer controls
+
+Primary files:
+
+```text
+app/src/main/assets/home/sharingan.js
+app/src/main/assets/home/themes/sharingan.css
+```
+
+## Remote navigation behavior
+
+- LEFT / RIGHT moves through favorite apps normally.
+- DOWN from any favorite app moves into the footer.
+- UP from any footer button returns to the closest favorite app above it.
+- Footer/app mapping is based on DOM positions rather than hardcoded package names.
+
+## Install on another Fire Stick
+
+```sh
+git clone https://github.com/Kumarteja-dev/fire-tv-custom-launcher.git
+cd fire-tv-custom-launcher
+adb connect <NEW_FIRE_TV_IP>:5555
+```
+
+Install the launcher APK and FireStick Fixer if they are not already installed, then push the launcher assets:
+
+```sh
+MSYS2_ARG_CONV_EXCL="/sdcard" adb push app/src/main/assets/home/. /sdcard/tvhome/
+```
+
+Restart:
+
+```sh
+adb shell am force-stop dev.tvhome
+adb shell monkey -p dev.tvhome -c android.intent.category.LAUNCHER 1
+```
+
+If the second Fire Stick has different installed apps, update `config.js`.
+
+## Git remotes
+
+Recommended setup:
+
+```text
+origin    → your customized repository
+upstream  → original Fire TV Web Launcher repository
+```
+
+Current repositories:
+
+```text
+origin:   https://github.com/Kumarteja-dev/fire-tv-custom-launcher.git
+upstream: https://github.com/pickdani/fire-tv-web-launcher.git
+```
+
+## Optional debloat tools
+
+The upstream project includes:
+
+```text
+tools/debloat.sh
+```
+
+Review the script before using it. Debloating is optional.
+
+## Troubleshooting
+
+### `adb: command not found`
+
+```sh
+export ANDROID_HOME="/c/Users/<YOUR_USER>/AppData/Local/Android/Sdk"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
+```
+
+### Fire Stick disappears from ADB
+
+```sh
+adb connect <FIRE_TV_IP>:5555
+```
+
+The Fire Stick IP may change after a router or device reboot.
+
+### Home button jumps between Amazon Home and the custom launcher
+
+Make sure only FireStick Fixer is enabled as the accessibility redirect service. Do not enable both FireStick Fixer and Web Launcher HomeGuard.
+
+### Launcher files appear under `/sdcard/tvhome/home/`
+
+```sh
+MSYS2_ARG_CONV_EXCL="*" adb shell "rm -rf /sdcard/tvhome && mkdir -p /sdcard/tvhome"
+MSYS2_ARG_CONV_EXCL="/sdcard" adb push app/src/main/assets/home/. /sdcard/tvhome/
+```
+
+## Credits
+
+Based on the original open-source **Fire TV Web Launcher** by `pickdani`:
+
+https://github.com/pickdani/fire-tv-web-launcher
+
+FireStick Fixer is used for Home-button redirection.
+
+Weather data is provided by Open-Meteo.
+
+## Artwork and trademarks
+
+Some custom themes may reference third-party characters, logos, or user-supplied artwork. Those assets are not necessarily covered by this repository's MIT license.
+
+Brand names and trademarks belong to their respective owners.
+
+If you redistribute this repository publicly, make sure you have permission to redistribute custom artwork or other third-party assets included in your copy.
 
 ## Contributing
 
@@ -65,15 +339,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-[MIT](LICENSE.md). The photos have their own licenses (below).
-
-## Credits
-
-- Photos from Wikimedia Commons, cropped and resized. The app icon and banner come from the first photo.
-  - [Charles River Esplanade](https://commons.wikimedia.org/wiki/File:Charles_River_Esplanade_Boston_November_2016_003.jpg)
-    by King of Hearts, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)
-  - [Boston Common in fall](https://commons.wikimedia.org/wiki/File:Boston_Common_in_fall.jpg)
-    by Chase Elliott Clark, [CC BY 2.0](https://creativecommons.org/licenses/by/2.0)
-  - [Boston Public Garden](https://commons.wikimedia.org/wiki/File:Boston_Public_Garden_November_2016_004.jpg)
-    by King of Hearts, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0)
-- Weather data from [Open-Meteo](https://open-meteo.com), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0).
+Code originating from the base project remains under the repository's [MIT License](LICENSE.md), subject to the original project's license terms and any separate rights that apply to third-party assets.
