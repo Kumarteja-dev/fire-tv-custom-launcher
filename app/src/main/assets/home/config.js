@@ -3,16 +3,15 @@ export default {
   // Apps on the main row, in this order, by package name.
   // "All apps" on the TV shows every app. Or run: adb shell pm list packages
   favorites: [
-    "com.netflix.ninja",               // Netflix
-    "com.hbo.hbonow",                  // Max
-    "com.hulu.plus",                   // Hulu
-    "com.disney.disneyplus",           // Disney+
-    "com.amazon.firetv.youtube",       // YouTube
-    "com.amazon.firetv.youtube.tv",    // YouTube TV
-    "com.apple.atve.amazon.appletv",   // Apple TV
-    "com.spotify.tv.android",          // Spotify
-    "com.bloomberg.btva",              // Bloomberg
-  ],
+"com.netflix.ninja",
+"com.amazon.firebat",
+"com.amazon.firetv.youtube",
+"com.hbo.hbonow",
+"com.peacocktv.peacockfiretv",
+"com.apple.atve.amazon.appletv",
+"com.cricbuzz.android.tv",
+"com.fox.foxone",
+],
 
   // Apps never shown in "All apps".
   hidden: [

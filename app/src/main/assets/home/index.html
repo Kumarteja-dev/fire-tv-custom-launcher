@@ -1,45 +1,210 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
-  <!-- Lay out the page for a 1920-wide screen. The TV scales it to fit. -->
-  <meta name="viewport" content="width=1920">
-  <title>Fire TV Web Launcher</title>
-  <link rel="stylesheet" href="style.css">
+
+  <meta
+    name="viewport"
+    content="width=1920"
+  >
+
+  <title>KT TV Launcher</title>
+
+  <!-- Base launcher -->
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+  <!-- Active theme -->
+  <link
+    id="theme-css"
+    rel="stylesheet"
+  >
 </head>
+
 <body>
-  <div class="background" id="background-a"></div>
-  <div class="background" id="background-b"></div>
+
+  <!-- Background wallpapers -->
+  <div
+    class="background"
+    id="background-a">
+  </div>
+
+  <div
+    class="background"
+    id="background-b">
+  </div>
+
+
+  <!-- ===================================
+       SHARINGAN / CHARACTER STAGE
+       Hidden unless Sharingan theme is active
+       =================================== -->
+
+  <div
+    id="itachi-stage"
+    aria-hidden="true">
+
+    <!-- Character face image -->
+    <div id="itachi-face"></div>
+
+
+    <!-- Left Sharingan eye -->
+    <div
+      class="sharingan-eye"
+      id="sharingan-left">
+
+      <div class="sharingan-iris">
+
+        <div class="sharingan-pupil"></div>
+
+        <span class="tomoe tomoe-1"></span>
+        <span class="tomoe tomoe-2"></span>
+        <span class="tomoe tomoe-3"></span>
+
+      </div>
+
+    </div>
+
+
+    <!-- Right Sharingan eye -->
+    <div
+      class="sharingan-eye"
+      id="sharingan-right">
+
+      <div class="sharingan-iris">
+
+        <div class="sharingan-pupil"></div>
+
+        <span class="tomoe tomoe-1"></span>
+        <span class="tomoe tomoe-2"></span>
+        <span class="tomoe tomoe-3"></span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Cinematic shading -->
   <div id="shade"></div>
 
+
+  <!-- ===================================
+       HEADER
+       =================================== -->
+
   <header>
+
     <div id="clock">
-      <div id="time">--:--</div>
+
+      <div id="time">
+        --:--
+      </div>
+
       <div id="date"></div>
+
     </div>
-    <div id="weather" hidden>
-      <div id="weather-now"><span id="weather-icon"></span><span id="weather-temp"></span></div>
+
+
+    <div
+      id="weather"
+      hidden>
+
+      <div id="weather-now">
+
+        <span id="weather-icon"></span>
+
+        <span id="weather-temp"></span>
+
+      </div>
+
       <div id="weather-detail"></div>
+
     </div>
+
   </header>
 
+
+  <!-- ===================================
+       MAIN CONTENT
+       =================================== -->
+
   <main>
+
     <section id="favorites-section">
-      <div class="row" id="favorites"></div>
+
+      <div
+        class="row"
+        id="favorites">
+      </div>
+
     </section>
 
-    <section id="all-section" hidden>
-      <h2>All apps</h2>
-      <div class="grid" id="all-apps"></div>
+
+    <section
+      id="all-section"
+      hidden>
+
+      <h2>
+        All apps
+      </h2>
+
+      <div
+        class="grid"
+        id="all-apps">
+      </div>
+
     </section>
+
   </main>
 
+
+  <!-- ===================================
+       FOOTER
+       =================================== -->
+
   <footer>
-    <button class="pill" id="btn-all">All apps</button>
-    <button class="pill" id="btn-settings">Settings</button>
-    <button class="pill" id="btn-amazon">Amazon home</button>
+
+    <button
+      class="pill"
+      id="btn-all">
+      All apps
+    </button>
+
+
+    <button
+      class="pill"
+      id="btn-theme">
+      Themes
+    </button>
+
+
+    <button
+      class="pill"
+      id="btn-settings">
+      Settings
+    </button>
+
+
+    <button
+      class="pill"
+      id="btn-amazon">
+      Amazon home
+    </button>
+
   </footer>
 
-  <script type="module" src="main.js"></script>
+
+  <!-- Main launcher -->
+  <script
+    type="module"
+    src="main.js">
+  </script>
+
 </body>
+
 </html>

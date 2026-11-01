@@ -1,0 +1,182 @@
+/* =========================================
+   KT TV LAUNCHER
+   SHARINGAN THEME - REAL IRIS LAYERS
+   ========================================= */
+
+body[data-theme="sharingan"] {
+  background: #000;
+  overflow: hidden;
+}
+
+/* Hide normal rotating launcher wallpaper */
+body[data-theme="sharingan"] .background {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Stage */
+#itachi-stage {
+  display: none;
+}
+
+body[data-theme="sharingan"] #itachi-stage {
+  display: block;
+  position: fixed;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Base artwork with only the iris centers cleaned */
+body[data-theme="sharingan"] #itachi-face {
+  position: absolute;
+  inset: 0;
+  width: 1920px;
+  height: 1080px;
+
+  background-image: url("../images/itachi-base-no-iris.jpg");
+  background-size: 1920px 1080px;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  z-index: 0;
+}
+
+/* Keep the original eye containers, but make them transparent holders */
+body[data-theme="sharingan"] .sharingan-eye {
+  position: fixed;
+  width: 68px;
+  height: 68px;
+  overflow: visible;
+
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+
+  z-index: 4;
+}
+
+/* Exact positions mapped from the original 2048x1152 artwork to 1920x1080 */
+body[data-theme="sharingan"] #sharingan-left {
+  left: 741px;
+  top: 293px;
+}
+
+body[data-theme="sharingan"] #sharingan-right {
+  left: 1139px;
+  top: 288px;
+}
+
+/* The real extracted original iris layers */
+body[data-theme="sharingan"] .sharingan-iris {
+  position: absolute;
+  inset: 0;
+
+  width: 68px;
+  height: 68px;
+
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  border-radius: 0;
+  box-shadow: none;
+
+  transition: transform 110ms ease-out;
+
+  z-index: 2;
+}
+
+body[data-theme="sharingan"] #sharingan-left .sharingan-iris {
+  background-image: url("../images/itachi-left-iris.png");
+}
+
+body[data-theme="sharingan"] #sharingan-right .sharingan-iris {
+  background-image: url("../images/itachi-right-iris.png");
+}
+
+/* Disable all old CSS-generated eye pieces */
+body[data-theme="sharingan"] .sharingan-pupil,
+body[data-theme="sharingan"] .tomoe,
+body[data-theme="sharingan"] .sharingan-eye::before,
+body[data-theme="sharingan"] .sharingan-eye::after,
+body[data-theme="sharingan"] .sharingan-iris::before,
+body[data-theme="sharingan"] .sharingan-iris::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Cinematic shading */
+body[data-theme="sharingan"] #shade {
+  z-index: 2;
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.20) 0%,
+      rgba(0,0,0,0.00) 36%,
+      rgba(0,0,0,0.04) 56%,
+      rgba(0,0,0,0.58) 100%
+    );
+}
+
+/* UI remains above artwork */
+body[data-theme="sharingan"] header,
+body[data-theme="sharingan"] main,
+body[data-theme="sharingan"] footer {
+  z-index: 10;
+}
+
+body[data-theme="sharingan"] #clock,
+body[data-theme="sharingan"] #weather {
+  background: rgba(12,0,4,0.40);
+  border: 1px solid rgba(255,35,55,0.22);
+  box-shadow:
+    0 15px 45px rgba(0,0,0,0.42),
+    0 0 24px rgba(255,0,30,0.08);
+}
+
+body[data-theme="sharingan"] .app {
+  background-color: rgba(5,0,2,0.48);
+  border-color: rgba(255,40,60,0.16);
+  box-shadow: 0 12px 34px rgba(0,0,0,0.55);
+}
+
+body[data-theme="sharingan"] .app:focus {
+  transform: translateY(-11px) scale(1.13);
+
+  background-color: rgba(72,0,10,0.70);
+  border-color: rgba(255,50,70,0.96);
+
+  box-shadow:
+    0 22px 60px rgba(0,0,0,0.72),
+    0 0 0 2px rgba(255,20,40,0.32),
+    0 0 28px rgba(255,0,30,0.60),
+    0 0 70px rgba(180,0,20,0.36);
+
+  z-index: 20;
+}
+
+body[data-theme="sharingan"] .app:focus .label {
+  color: #fff;
+  text-shadow:
+    0 0 11px rgba(255,0,30,0.90),
+    0 3px 10px #000;
+}
+
+body[data-theme="sharingan"] .pill {
+  background: rgba(15,0,4,0.55);
+  border-color: rgba(255,40,60,0.20);
+}
+
+body[data-theme="sharingan"] .pill:focus {
+  color: #fff;
+  background: rgba(150,0,20,0.92);
+  border-color: rgba(255,70,85,0.90);
+  box-shadow: 0 0 28px rgba(255,0,30,0.48);
+}
