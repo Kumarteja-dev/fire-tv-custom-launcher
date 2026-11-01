@@ -13,7 +13,7 @@ import { startBackground } from "./background.js";
 import { enableRemoteKeys } from "./remote.js";
 import { initThemes } from "./themes.js";
 import { initSharinganSound } from "./sharingan-sound.js";
-import { initSharinganTracking, wakeSharingan, suspendSharingan } from "./sharingan.js";
+import { initSharinganTracking, wakeSharingan, suspendSharingan, resetSharinganIdle } from "./sharingan.js";
 
 const timeEl = document.getElementById("time");
 const dateEl = document.getElementById("date");
@@ -51,10 +51,12 @@ window.onHide = suspendSharingan;
 window.onAppsChanged = loadApps;
 
 window.onHome = () => {
+  resetSharinganIdle();
   showAll(false);
 };
 
 window.onBack = () => {
+  resetSharinganIdle();
   if (isAllShown()) {
     showAll(false);
   }

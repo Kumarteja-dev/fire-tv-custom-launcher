@@ -20,12 +20,12 @@ export default {
 
   // Weather from Open-Meteo (free, no account). Set to null to hide it.
   weather: {
-    city: "Boston",
-    latitude: 42.3601,
-    longitude: -71.0589,
-    units: "fahrenheit",               // or "celsius"
-    refreshMinutes: 15,
-  },
+  city: "Austin",
+  latitude: 30.2672,
+  longitude: -97.7431,
+  units: "fahrenheit",     
+  refreshMinutes: 15,
+},
 
   // One image or a list: files in this folder, or https:// links.
   // With a list, the background fades to the next one every backgroundMinutes.

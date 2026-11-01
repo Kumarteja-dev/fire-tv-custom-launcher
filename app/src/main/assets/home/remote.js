@@ -18,6 +18,29 @@ function moveFocus([dx, dy], focusFirst) {
   if (!buttons.includes(current)) return focusFirst();
 
   const from = center(current);
+  const favorites = buttons.filter((button) => button.closest("#favorites"));
+  const verticalTargets = dy > 0 && favorites.includes(current)
+    ? buttons.filter((button) => button.closest("footer"))
+    : dy < 0 && current.closest("footer") && favorites.length
+      ? favorites
+      : null;
+
+  // Cross rows on vertical presses, regardless of vertical offsets within a row.
+  if (verticalTargets !== null) {
+    let nearest = null;
+    let nearestDistance = Infinity;
+    for (const button of verticalTargets) {
+      const distance = Math.abs(center(button).x - from.x);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearest = button;
+      }
+    }
+    nearest?.focus();
+    nearest?.scrollIntoView({ block: "nearest", inline: "nearest" });
+    return;
+  }
+
   let best = null;
   let bestScore = Infinity;
   for (const button of buttons) {

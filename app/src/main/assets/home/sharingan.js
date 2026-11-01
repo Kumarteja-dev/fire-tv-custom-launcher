@@ -4,8 +4,21 @@ let suspend = () => {};
 let launching = false;
 let launchTimer;
 let restoreTimer;
+const IDLE_TIMEOUT_MS = 25_000;
+let idleTimer;
 const active = () => document.body.dataset.theme === "sharingan";
 const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function clearIdle() {
+  clearTimeout(idleTimer);
+  document.body.classList.remove("sharingan-idle");
+}
+export function resetSharinganIdle() {
+  clearIdle();
+  if (!active() || document.hidden) return;
+  idleTimer = setTimeout(() => {
+    if (active() && !document.hidden) document.body.classList.add("sharingan-idle");
+  }, IDLE_TIMEOUT_MS);
+}
 function resetLaunch() {
   clearTimeout(restoreTimer);
   document.body.classList.remove("sharingan-launch");
@@ -77,6 +90,7 @@ export function initSharinganTracking() {
     }, 5500 + Math.random() * 6500);
   }
   suspend = () => {
+    clearIdle();
     awake = false;
     clearTimeout(blinkTimer); clearTimeout(blinkEnd); clearTimeout(spinEnd);
     clearTimeout(launchTimer); cancelAnimationFrame(frame);
@@ -89,6 +103,7 @@ export function initSharinganTracking() {
     suspend();
     awake = !document.hidden;
     if (!active() || !awake) return;
+    resetSharinganIdle();
     scheduleTrack();
     if (!reduced()) {
       void stage.getBoundingClientRect();
@@ -98,6 +113,10 @@ export function initSharinganTracking() {
     scheduleBlink();
   };
   document.addEventListener("focusin", scheduleTrack);
+  // Observe input without consuming it or triggering the eye wake animation.
+  for (const event of ["keydown", "keyup", "focusin", "pointerdown", "click"]) {
+    document.addEventListener(event, resetSharinganIdle, true);
+  }
   document.addEventListener("focusout", scheduleTrack);
   window.addEventListener("resize", scheduleTrack);
   document.getElementById("theme-css").addEventListener("load", scheduleTrack);

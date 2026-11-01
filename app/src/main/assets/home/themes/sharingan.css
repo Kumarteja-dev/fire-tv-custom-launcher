@@ -29,6 +29,8 @@ body[data-theme="sharingan"] #shade {
 body[data-theme="sharingan"] header,
 body[data-theme="sharingan"] main,
 body[data-theme="sharingan"] footer { z-index: 10; transition: opacity 240ms ease; }
+body[data-theme="sharingan"].sharingan-idle main { opacity: .25; }
+body[data-theme="sharingan"].sharingan-idle footer { opacity: .20; }
 body[data-theme="sharingan"] #clock,
 body[data-theme="sharingan"] #weather {
   background: rgba(12,0,4,0.40);
@@ -79,3 +81,71 @@ body[data-theme="sharingan"] .app[data-pkg="com.peacocktv.peacockfiretv"] { back
 body[data-theme="sharingan"] .app[data-pkg="com.apple.atve.amazon.appletv"] { background-image: url("../images/logos/apple-tv.svg") !important; background-size: 90%; }
 body[data-theme="sharingan"] .app[data-pkg="com.cricbuzz.android.tv"] { background-image: url("../images/logos/cricbuzz.svg") !important; background-size: 90%; }
 body[data-theme="sharingan"] .app[data-pkg="com.fox.foxone"] { background-image: url("../images/logos/fox-one.svg") !important; background-size: 90%; }
+
+/* Preserve the existing All apps presentation. */
+body[data-theme="sharingan"] #all-apps .app .label,
+body[data-theme="sharingan"] #all-apps .app:focus .label {
+  display: none !important;
+}
+
+/* Favorites: floating silver glyphs. Never fall back to installed artwork. */
+body[data-theme="sharingan"] #favorites {
+  gap: clamp(12px, 2.3vw, 44px);
+}
+body[data-theme="sharingan"] #favorites .app {
+  flex: 0 1 176px;
+  min-width: 0;
+  background-image: none !important;
+  --favorite-symbol: url("../images/symbols/app.svg");
+}
+body[data-theme="sharingan"] #favorites .app::before {
+  content: "";
+  position: absolute;
+  width: 76px;
+  height: 76px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--favorite-symbol) center / contain no-repeat;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.65)) drop-shadow(0 0 7px rgba(215,35,55,.26));
+  transition: filter 200ms ease;
+}
+body[data-theme="sharingan"] #favorites .app:focus::before {
+  filter: brightness(1.18) drop-shadow(0 2px 2px rgba(0,0,0,.6)) drop-shadow(0 0 12px rgba(235,40,65,.55));
+}
+body[data-theme="sharingan"] #favorites .app .label {
+  display: block;
+  visibility: hidden;
+  opacity: 0;
+  bottom: -30px;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 500;
+  letter-spacing: .8px;
+  color: #f4eff0;
+  white-space: nowrap;
+  text-shadow: 0 2px 8px #000, 0 0 12px rgba(220,35,55,.3);
+}
+body[data-theme="sharingan"] #favorites .app:focus .label {
+  visibility: visible;
+  opacity: 1;
+}
+body[data-theme="sharingan"] #favorites .app[data-pkg="com.netflix.ninja"] { --favorite-symbol: url("../images/symbols/netflix.svg"); }
+body[data-theme="sharingan"] #favorites .app[data-pkg="com.amazon.firebat"] { --favorite-symbol: url("../images/symbols/prime-video.svg"); }
+body[data-theme="sharingan"] #favorites .app[data-pkg="com.amazon.firetv.youtube"] { --favorite-symbol: url("../images/symbols/youtube.svg"); }
+body[data-theme="sharingan"] #favorites .app[data-pkg="com.wbd.stream"] { --favorite-symbol: url("../images/symbols/max.svg"); }
+body[data-theme="sharingan"] #favorites .app[data-pkg="com.peacocktv.peacockfiretv"] { --favorite-symbol: url("../images/symbols/peacock.svg"); }
+body[data-theme="sharingan"] #favorites .app[data-pkg="com.apple.atve.amazon.appletv"] { --favorite-symbol: url("../images/logos/apple-tv.svg"); }
+body[data-theme="sharingan"] #favorites .app[data-pkg="com.cricbuzz.android.tv"] { --favorite-symbol: url("../images/logos/cricbuzz.svg"); }
+body[data-theme="sharingan"] #favorites .app[data-pkg="com.hbo.hbonow"] { --favorite-symbol: url("../images/logos/hbo.svg"); }
+body[data-theme="sharingan"] #favorites .app[data-pkg="com.fox.foxone"] { --favorite-symbol: url("../images/logos/fox-one.svg"); }
+
+/* Keep these local wordmarks proportional to the favorite tiles. */
+body[data-theme="sharingan"] #favorites .app[data-pkg="com.hbo.hbonow"]::before,
+body[data-theme="sharingan"] #favorites .app[data-pkg="com.apple.atve.amazon.appletv"]::before,
+body[data-theme="sharingan"] #favorites .app[data-pkg="com.cricbuzz.android.tv"]::before,
+body[data-theme="sharingan"] #favorites .app[data-pkg="com.fox.foxone"]::before {
+  width: 90%;
+  height: 90%;
+}
