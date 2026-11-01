@@ -12,7 +12,8 @@ import { updateWeather } from "./weather.js";
 import { startBackground } from "./background.js";
 import { enableRemoteKeys } from "./remote.js";
 import { initThemes } from "./themes.js";
-import { initSharinganTracking } from "./sharingan.js";
+import { initSharinganSound } from "./sharingan-sound.js";
+import { initSharinganTracking, wakeSharingan, suspendSharingan } from "./sharingan.js";
 
 const timeEl = document.getElementById("time");
 const dateEl = document.getElementById("date");
@@ -42,7 +43,10 @@ window.onShow = () => {
   updateClock();
   updateWeather();
   loadApps();
+  wakeSharingan();
 };
+
+window.onHide = suspendSharingan;
 
 window.onAppsChanged = loadApps;
 
@@ -83,6 +87,7 @@ document
 // Theme system
 
 initThemes();
+initSharinganSound();
 initSharinganTracking();
 
 

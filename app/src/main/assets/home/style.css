@@ -6,6 +6,13 @@
   --gutter: 64px;
 }
 
+/* Theme-only decoration must stay hidden even when its stylesheet is unloaded. */
+#itachi-stage,
+#sharingan-spotlight,
+.sharingan-only {
+  display: none;
+}
+
 * {
   box-sizing: border-box;
 }

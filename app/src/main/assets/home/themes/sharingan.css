@@ -1,182 +1,81 @@
-/* =========================================
-   KT TV LAUNCHER
-   SHARINGAN THEME - REAL IRIS LAYERS
-   ========================================= */
-
-body[data-theme="sharingan"] {
-  background: #000;
-  overflow: hidden;
-}
-
-/* Hide normal rotating launcher wallpaper */
-body[data-theme="sharingan"] .background {
-  opacity: 0 !important;
-  visibility: hidden !important;
-}
-
-/* Stage */
-#itachi-stage {
-  display: none;
-}
-
+/* Sharingan artwork and logo dock; every rule is theme-scoped. */
+body[data-theme="sharingan"] { background: #000; }
+body[data-theme="sharingan"] .background { visibility: hidden; }
 body[data-theme="sharingan"] #itachi-stage {
-  display: block;
-  position: fixed;
-  inset: 0;
-  width: 1920px;
-  height: 1080px;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
+  display: block; position: fixed; inset: 0; pointer-events: none;
+  transform-origin: 51% 33%; transition: transform 240ms ease-in, opacity 240ms ease-in;
 }
-
-/* Base artwork with only the iris centers cleaned */
-body[data-theme="sharingan"] #itachi-face {
-  position: absolute;
-  inset: 0;
-  width: 1920px;
-  height: 1080px;
-
-  background-image: url("../images/itachi-base-no-iris.jpg");
-  background-size: 1920px 1080px;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  z-index: 0;
+body[data-theme="sharingan"] #itachi-art { width: 100%; height: 100%; display: block; }
+body[data-theme="sharingan"] .sharingan-gaze { transition: transform 160ms cubic-bezier(.2,.7,.25,1); }
+body[data-theme="sharingan"] .sharingan-gaze,
+body[data-theme="sharingan"] .sharingan-spin { transform-box: view-box; transform-origin: 0 0; }
+body[data-theme="sharingan"] .sharingan-lid-edge { fill: none; stroke: #100b0d; stroke-width: 2; stroke-linejoin: round; }
+body[data-theme="sharingan"].sharingan-blink .sharingan-lid-left { animation: itachi-blink-left 210ms ease-in-out; }
+body[data-theme="sharingan"].sharingan-blink .sharingan-lid-right { animation: itachi-blink-right 210ms ease-in-out; }
+body[data-theme="sharingan"].sharingan-wake .sharingan-spin { animation: itachi-spin 850ms cubic-bezier(.15,.65,.2,1); }
+@keyframes itachi-spin { from { transform: rotate(-360deg); } to { transform: rotate(0); } }
+/* The curved lower edge descends over the opening; neither eye nor skin slides. */
+@keyframes itachi-blink-left {
+  0%, 100% { d: path("M798 329 Q851 334 906 395 Q851 334 798 329Z"); }
+  42%, 55% { d: path("M798 329 Q851 334 906 395 Q784 483 798 329Z"); }
 }
-
-/* Keep the original eye containers, but make them transparent holders */
-body[data-theme="sharingan"] .sharingan-eye {
-  position: fixed;
-  width: 68px;
-  height: 68px;
-  overflow: visible;
-
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-
-  z-index: 4;
+@keyframes itachi-blink-right {
+  0%, 100% { d: path("M1187 398 Q1198 336 1297 315 Q1198 336 1187 398Z"); }
+  42%, 55% { d: path("M1187 398 Q1198 336 1297 315 Q1340 459 1187 398Z"); }
 }
-
-/* Exact positions mapped from the original 2048x1152 artwork to 1920x1080 */
-body[data-theme="sharingan"] #sharingan-left {
-  left: 741px;
-  top: 293px;
-}
-
-body[data-theme="sharingan"] #sharingan-right {
-  left: 1139px;
-  top: 288px;
-}
-
-/* The real extracted original iris layers */
-body[data-theme="sharingan"] .sharingan-iris {
-  position: absolute;
-  inset: 0;
-
-  width: 68px;
-  height: 68px;
-
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  border-radius: 0;
-  box-shadow: none;
-
-  transition: transform 110ms ease-out;
-
-  z-index: 2;
-}
-
-body[data-theme="sharingan"] #sharingan-left .sharingan-iris {
-  background-image: url("../images/itachi-left-iris.png");
-}
-
-body[data-theme="sharingan"] #sharingan-right .sharingan-iris {
-  background-image: url("../images/itachi-right-iris.png");
-}
-
-/* Disable all old CSS-generated eye pieces */
-body[data-theme="sharingan"] .sharingan-pupil,
-body[data-theme="sharingan"] .tomoe,
-body[data-theme="sharingan"] .sharingan-eye::before,
-body[data-theme="sharingan"] .sharingan-eye::after,
-body[data-theme="sharingan"] .sharingan-iris::before,
-body[data-theme="sharingan"] .sharingan-iris::after {
-  display: none !important;
-  content: none !important;
-}
-
-/* Cinematic shading */
 body[data-theme="sharingan"] #shade {
-  z-index: 2;
-  pointer-events: none;
-
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(0,0,0,0.20) 0%,
-      rgba(0,0,0,0.00) 36%,
-      rgba(0,0,0,0.04) 56%,
-      rgba(0,0,0,0.58) 100%
-    );
+  background: linear-gradient(180deg,rgba(0,0,0,.25),transparent 35%,rgba(0,0,0,.1) 58%,rgba(0,0,0,.88));
 }
-
-/* UI remains above artwork */
 body[data-theme="sharingan"] header,
 body[data-theme="sharingan"] main,
-body[data-theme="sharingan"] footer {
-  z-index: 10;
-}
-
+body[data-theme="sharingan"] footer { z-index: 10; transition: opacity 240ms ease; }
 body[data-theme="sharingan"] #clock,
 body[data-theme="sharingan"] #weather {
   background: rgba(12,0,4,0.40);
   border: 1px solid rgba(255,35,55,0.22);
-  box-shadow:
-    0 15px 45px rgba(0,0,0,0.42),
-    0 0 24px rgba(255,0,30,0.08);
+  box-shadow: 0 15px 45px rgba(0,0,0,0.42), 0 0 24px rgba(255,0,30,0.08);
 }
-
+body[data-theme="sharingan"] main { bottom: 125px; }
+body[data-theme="sharingan"] #favorites { position: relative; gap: 44px; padding: 30px 54px; flex-wrap: nowrap; }
 body[data-theme="sharingan"] .app {
-  background-color: rgba(5,0,2,0.48);
-  border-color: rgba(255,40,60,0.16);
-  box-shadow: 0 12px 34px rgba(0,0,0,0.55);
+  appearance: none; -webkit-appearance: none;
+  border: 0; border-radius: 0; box-shadow: none; background-color: transparent;
+  opacity: .74; transform: scale(.96);
+  transition: transform 200ms cubic-bezier(.2,.7,.25,1), opacity 200ms ease;
 }
-
+body[data-theme="sharingan"] #favorites .app { width: 176px; height: 100px; }
+body[data-theme="sharingan"] .app.icon-only { background-color: transparent; }
 body[data-theme="sharingan"] .app:focus {
-  transform: translateY(-11px) scale(1.13);
-
-  background-color: rgba(72,0,10,0.70);
-  border-color: rgba(255,50,70,0.96);
-
-  box-shadow:
-    0 22px 60px rgba(0,0,0,0.72),
-    0 0 0 2px rgba(255,20,40,0.32),
-    0 0 28px rgba(255,0,30,0.60),
-    0 0 70px rgba(180,0,20,0.36);
-
-  z-index: 20;
+  background-color: transparent; box-shadow: none; opacity: 1;
+  transform: translateY(-8px) scale(1.20);
+}
+body[data-theme="sharingan"] .app .label { bottom: -30px; font-size: 17px; letter-spacing: .5px; }
+body[data-theme="sharingan"] .sharingan-only { display: block; }
+body[data-theme="sharingan"] #sharingan-spotlight {
+  display: block; position: fixed; left: 0; top: 0; width: 300px; height: 180px;
+  border-radius: 50%;
+  pointer-events: none; opacity: 0; z-index: 3;
+  background: radial-gradient(ellipse,rgba(255,240,240,.19),rgba(222,30,47,.18) 30%,rgba(160,0,22,.08) 49%,transparent 70%);
+  transition: transform 200ms cubic-bezier(.2,.7,.25,1), opacity 200ms ease;
+}
+body[data-theme="sharingan"] #sharingan-spotlight.visible { opacity: 1; }
+body[data-theme="sharingan"] .pill { background: rgba(10,0,2,.35); border-color: rgba(255,255,255,.12); }
+body[data-theme="sharingan"] .pill:focus { color: #fff; background: #7b1722; }
+body[data-theme="sharingan"].sharingan-launch #itachi-stage { transform: scale(1.045); opacity: .25; }
+body[data-theme="sharingan"].sharingan-launch main,
+body[data-theme="sharingan"].sharingan-launch header,
+body[data-theme="sharingan"].sharingan-launch footer,
+body[data-theme="sharingan"].sharingan-launch #sharingan-spotlight { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  body[data-theme="sharingan"] * { animation: none !important; transition: none !important; }
 }
 
-body[data-theme="sharingan"] .app:focus .label {
-  color: #fff;
-  text-shadow:
-    0 0 11px rgba(255,0,30,0.90),
-    0 3px 10px #000;
-}
-
-body[data-theme="sharingan"] .pill {
-  background: rgba(15,0,4,0.55);
-  border-color: rgba(255,40,60,0.20);
-}
-
-body[data-theme="sharingan"] .pill:focus {
-  color: #fff;
-  background: rgba(150,0,20,0.92);
-  border-color: rgba(255,70,85,0.90);
-  box-shadow: 0 0 28px rgba(255,0,30,0.48);
-}
+/* Existing local wordmarks for the Sharingan app row and All apps. */
+body[data-theme="sharingan"] .app[data-pkg="com.netflix.ninja"] { background-image: url("../images/logos/netflix.svg") !important; background-size: 90%; }
+body[data-theme="sharingan"] .app[data-pkg="com.amazon.firebat"] { background-image: url("../images/logos/prime-video.svg") !important; background-size: 90%; }
+body[data-theme="sharingan"] .app[data-pkg="com.amazon.firetv.youtube"] { background-image: url("../images/logos/youtube.svg") !important; background-size: 90%; }
+body[data-theme="sharingan"] .app[data-pkg="com.hbo.hbonow"] { background-image: url("../images/logos/hbo.svg") !important; background-size: 90%; }
+body[data-theme="sharingan"] .app[data-pkg="com.peacocktv.peacockfiretv"] { background-image: url("../images/logos/peacock.svg") !important; background-size: 90%; }
+body[data-theme="sharingan"] .app[data-pkg="com.apple.atve.amazon.appletv"] { background-image: url("../images/logos/apple-tv.svg") !important; background-size: 90%; }
+body[data-theme="sharingan"] .app[data-pkg="com.cricbuzz.android.tv"] { background-image: url("../images/logos/cricbuzz.svg") !important; background-size: 90%; }
+body[data-theme="sharingan"] .app[data-pkg="com.fox.foxone"] { background-image: url("../images/logos/fox-one.svg") !important; background-size: 90%; }

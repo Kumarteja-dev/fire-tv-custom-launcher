@@ -38,57 +38,65 @@
   </div>
 
 
-  <!-- ===================================
-       SHARINGAN / CHARACTER STAGE
-       Hidden unless Sharingan theme is active
-       =================================== -->
-
-  <div
-    id="itachi-stage"
-    aria-hidden="true">
-
-    <!-- Character face image -->
-    <div id="itachi-face"></div>
-
-
-    <!-- Left Sharingan eye -->
-    <div
-      class="sharingan-eye"
-      id="sharingan-left">
-
-      <div class="sharingan-iris">
-
-        <div class="sharingan-pupil"></div>
-
-        <span class="tomoe tomoe-1"></span>
-        <span class="tomoe tomoe-2"></span>
-        <span class="tomoe tomoe-3"></span>
-
-      </div>
-
-    </div>
-
-
-    <!-- Right Sharingan eye -->
-    <div
-      class="sharingan-eye"
-      id="sharingan-right">
-
-      <div class="sharingan-iris">
-
-        <div class="sharingan-pupil"></div>
-
-        <span class="tomoe tomoe-1"></span>
-        <span class="tomoe tomoe-2"></span>
-        <span class="tomoe tomoe-3"></span>
-
-      </div>
-
-    </div>
-
+  <!-- All coordinates use the original 2048 x 1152 artwork space. The fixed
+       socket masks leave the original lashes, hair and eye outlines untouched. -->
+  <div id="itachi-stage" aria-hidden="true">
+    <svg id="itachi-art" viewBox="0 0 2048 1152" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <!-- Masks follow the visible opening, inside the inked lids and hair. -->
+        <clipPath id="socket-left"><path d="M800 332 Q847 337 877 365 Q892 379 903 395 Q878 414 839 415 L834 389 L827 388 L829 416 L813 415 Q804 380 800 332Z"/></clipPath>
+        <clipPath id="socket-right"><path d="M1203 348 Q1242 324 1295 318 L1291 389 Q1253 410 1188 403 Q1192 369 1203 348Z"/></clipPath>
+        <!-- Only iris pigment moves; the socket artwork and glow stay fixed. -->
+        <radialGradient id="iris-red" cx="45%" cy="40%" r="65%">
+          <stop offset="0" stop-color="#ff2839"/>
+          <stop offset=".65" stop-color="#ec001c"/>
+          <stop offset="1" stop-color="#9e0014"/>
+        </radialGradient>
+        <clipPath id="mouth-region"><path d="M918 685 Q1045 673 1178 681 L1184 730 Q1053 792 921 739Z"/></clipPath>
+        <clipPath id="lid-left"><path id="lid-curve-left" class="sharingan-lid-left" d="M798 329 Q851 334 906 395 Q851 334 798 329Z"/></clipPath>
+        <clipPath id="lid-right"><path id="lid-curve-right" class="sharingan-lid-right" d="M1187 398 Q1198 336 1297 315 Q1198 336 1187 398Z"/></clipPath>
+      </defs>
+      <!-- Original face stays fixed. Clean artwork is used only inside each socket. -->
+      <image href="images/itachi-face.jpg" width="2048" height="1152"/>
+      <g clip-path="url(#socket-left)">
+        <image href="images/itachi-face-clean.jpg" width="2048" height="1152"/>
+        <g transform="translate(832 348)">
+          <g class="sharingan-gaze" data-x="832" data-y="348">
+            <ellipse class="sharingan-iris-base" rx="31" ry="32" fill="url(#iris-red)"/>
+            <g class="sharingan-spin">
+              <image href="images/itachi-mangekyo.svg" x="-23" y="-23" width="46" height="46"/>
+            </g>
+          </g>
+        </g>
+        <!-- A stationary sample of the original skin is revealed by a curved lid. -->
+        <g clip-path="url(#lid-left)">
+          <image href="images/itachi-face.jpg" x="-108" y="-132" width="2048" height="1152"/>
+        </g>
+        <use class="sharingan-lid-edge" href="#lid-curve-left"/>
+      </g>
+      <g clip-path="url(#socket-right)">
+        <image href="images/itachi-face-clean.jpg" width="2048" height="1152"/>
+        <g transform="translate(1250 337)">
+          <g class="sharingan-gaze" data-x="1250" data-y="337">
+            <ellipse class="sharingan-iris-base" rx="31" ry="32" fill="url(#iris-red)"/>
+            <g class="sharingan-spin">
+              <image href="images/itachi-mangekyo.svg" x="-23" y="-23" width="46" height="46"/>
+            </g>
+          </g>
+        </g>
+        <g clip-path="url(#lid-right)">
+          <image href="images/itachi-face.jpg" x="250" y="-195" width="2048" height="1152"/>
+        </g>
+        <use class="sharingan-lid-edge" href="#lid-curve-right"/>
+      </g>
+      <!-- Original mouth remains visible. A dedicated, registered smirk image is
+           required before enabling this overlay; do not substitute a CSS line. -->
+      <g id="itachi-expression" clip-path="url(#mouth-region)" data-asset-status="required">
+        <image id="itachi-smirk" x="0" y="0" width="2048" height="1152" opacity="0"/>
+      </g>
+    </svg>
   </div>
-
-
+  <div id="sharingan-spotlight" aria-hidden="true"></div>
   <!-- Cinematic shading -->
   <div id="shade"></div>
 
